@@ -6,6 +6,7 @@
 #include <ESP8266HTTPClient.h>
 #include <WiFiClient.h>
 #include <WiFiClientSecureBearSSL.h>
+#include "secrets.h"
 
 #define RST_PIN D3
 #define SS_PIN D4
@@ -29,7 +30,7 @@ byte bufferLen = 18;
 byte readBlockData[18];
 
 String data2;
-const String data1 = "https://script.google.com/macros/s/AKfycbwysfjP_i8Fu2FnF6qgupFJjn03AptaBXQonkTRzoPLkO3b0Ny1a2UJH3W4HMqlsM-i/exec?name=";
+const String data1 = Google_Spreadsheet_link; //replace with your credentials
 
 void setup() {
   Serial.begin(9600);
@@ -41,9 +42,8 @@ void setup() {
   digitalWrite(BUZZER, LOW);
 
   WiFi.mode(WIFI_STA);
-  WiFiMulti.addAP("Vijay_Jio", "Kaplay@108");
-  WiFiMulti.addAP("Atharva_Kaplay", "Kaplay@108");
-  WiFiMulti.addAP("Airtel_gane_7583", "air26305");
+  WiFiMulti.addAP(Wifi_SSID, Wifi_PASS);  //replace with your credentials
+
   while (WiFiMulti.run() != WL_CONNECTED) {
     digitalWrite(LED_G, LOW);
     digitalWrite(LED_R, HIGH);
