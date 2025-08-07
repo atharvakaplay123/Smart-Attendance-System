@@ -30,6 +30,7 @@ byte bufferLen = 18;
 byte readBlockData[18];
 
 String data2;
+
 const String data1 = Google_Spreadsheet_link; //replace with your credentials
 
 void setup() {
@@ -43,7 +44,6 @@ void setup() {
 
   WiFi.mode(WIFI_STA);
   WiFiMulti.addAP(Wifi_SSID, Wifi_PASS);  //replace with your credentials
-
   while (WiFiMulti.run() != WL_CONNECTED) {
     digitalWrite(LED_G, LOW);
     digitalWrite(LED_R, HIGH);
