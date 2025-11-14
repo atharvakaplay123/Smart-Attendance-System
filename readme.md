@@ -1,5 +1,5 @@
 # RFID + IoT Attendence System
-## Configuring google spreadsheet app script
+## Configuring Google SpreadSheet-Apps Script
 ### Step 1: Create a Blank Google SpreadSheet and go to 
 ```Extentions > Apps Script```
 ### Step 2: Copy the below code and paste it there

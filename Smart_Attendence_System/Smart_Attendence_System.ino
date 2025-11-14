@@ -1,3 +1,10 @@
+/*
+this arduino code is main RFID + IoT Based Smart Attendence System code
+
+GitHub Project Url: https://github.com/atharvakaplay123/Smart-Attendance-System.git
+GitHub Profile: https://github.com/atharvakaplay123
+Author: Atharva Kaplay
+*/
 #include <SPI.h>
 #include <MFRC522.h>
 #include <Arduino.h>
