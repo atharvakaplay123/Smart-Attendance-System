@@ -8,7 +8,7 @@ Author: Atharva Kaplay
 #include <SPI.h>
 #include <MFRC522.h>
 
-constexpr uint8_t RST_PIN = D3;  // Configurable, see typical pin layout above
+constexpr uint8_t RST_PIN = D8;  // Configurable, see typical pin layout above
 constexpr uint8_t SS_PIN = D4;   // Configurable, see typical pin layout above
 
 MFRC522 mfrc522(SS_PIN, RST_PIN);  // Instance of the class

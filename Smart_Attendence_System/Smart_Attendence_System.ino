@@ -13,7 +13,8 @@ Author: Atharva Kaplay
 #include <ESP8266HTTPClient.h>
 #include <WiFiClient.h>
 #include <WiFiClientSecureBearSSL.h>
-#include "secrets.h"
+// #include "secrets.h"
+#define Google_Spreadsheet_link "https://script.google.com/macros/s/AKfycbwysfjP_i8Fu2FnF6qgupFJjn03AptaBXQonkTRzoPLkO3b0Ny1a2UJH3W4HMqlsM-i/exec?name="
 
 #define RST_PIN D3
 #define SS_PIN D4
@@ -21,7 +22,8 @@ Author: Atharva Kaplay
 #define BUZZER D2
 #define LED_R D1
 #define LED_G D0
-
+unsigned long previousMillis = 0;
+bool ledState = LOW;
 String RFID;
 MFRC522 mfrc522(SS_PIN, RST_PIN);  // Instance of the class
 MFRC522::MIFARE_Key key;
@@ -38,7 +40,7 @@ byte readBlockData[18];
 
 String data2;
 
-const String data1 = Google_Spreadsheet_link; //replace with your credentials
+const String data1 = Google_Spreadsheet_link;  //replace with your credentials
 
 void setup() {
   Serial.begin(9600);
@@ -46,38 +48,64 @@ void setup() {
   pinMode(BUZZER, OUTPUT);
   pinMode(LED_R, OUTPUT);
   pinMode(LED_G, OUTPUT);
-
   digitalWrite(BUZZER, LOW);
 
   WiFi.mode(WIFI_STA);
-  WiFiMulti.addAP(Wifi_SSID, Wifi_PASS);  //replace with your credentials
-  while (WiFiMulti.run() != WL_CONNECTED) {
+  // WiFiMulti.addAP(Wifi_SSID, Wifi_PASS);  //replace with your credentials
+  WiFiMulti.addAP("Atharva_Kaplay", "Kaplay@108");
+  WiFiMulti.run();
+  if (WiFi.status() != WL_CONNECTED) {
+    WiFiMulti.run();
     digitalWrite(LED_G, LOW);
-    digitalWrite(LED_R, HIGH);
-    delay(100);
-    digitalWrite(LED_R, LOW);
-    delay(100);
-  }
-  digitalWrite(LED_R, LOW);
-  digitalWrite(LED_G, HIGH);
-  SPI.begin();
-}
-
-void loop() {
-      digitalWrite(LED_G, HIGH);
-  /////////////////////////////////////////////////////////////////////////////////////////////
-  //*********************************scaning connectivity status*********************************
-  if (WiFiMulti.run() != WL_CONNECTED) {
-    while (WiFiMulti.run() != WL_CONNECTED) {
-      digitalWrite(LED_G, LOW);
+    while (WiFi.status() != WL_CONNECTED) {
+      Serial.print('.');
       digitalWrite(LED_R, HIGH);
       delay(100);
       digitalWrite(LED_R, LOW);
       delay(100);
+      yield();
     }
-    if (WiFiMulti.run() == WL_CONNECTED) {
+    if (WiFi.status() == WL_CONNECTED) {
       digitalWrite(LED_R, LOW);
       digitalWrite(LED_G, HIGH);
+      Serial.println();
+      Serial.println("Connected!");
+      Serial.print("Connected to WiFi network: ");
+      Serial.println(WiFi.SSID());  // SSID name
+      Serial.print("IP Address: ");
+      Serial.println(WiFi.localIP());  // IP assigned
+    }
+  } else {
+    digitalWrite(LED_R, LOW);
+    digitalWrite(LED_G, HIGH);
+  }
+  SPI.begin();
+}
+
+void loop() {
+  digitalWrite(LED_G, HIGH);
+  /////////////////////////////////////////////////////////////////////////////////////////////
+  //*********************************scaning connectivity status*********************************
+  if (WiFi.status() != WL_CONNECTED) {
+    WiFiMulti.run();
+    digitalWrite(LED_G, LOW);
+    while (WiFi.status() != WL_CONNECTED) {
+      Serial.print('.');
+      digitalWrite(LED_R, HIGH);
+      delay(100);
+      digitalWrite(LED_R, LOW);
+      delay(100);
+      yield();
+    }
+    if (WiFi.status() == WL_CONNECTED) {
+      digitalWrite(LED_R, LOW);
+      digitalWrite(LED_G, HIGH);
+      Serial.println();
+      Serial.println("Connected!");
+      Serial.print("Connected to WiFi network: ");
+      Serial.println(WiFi.SSID());  // SSID name
+      Serial.print("IP Address: ");
+      Serial.println(WiFi.localIP());  // IP assigned
     }
   }
   /////////////////////////////////////////////////////////////////////////////////////////////
